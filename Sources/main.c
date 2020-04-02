@@ -10,7 +10,7 @@
 
 /** @{ */
 #include <stdio.h>
-
+int memoria[256];
 /**
  * @brief funcao principal do programa
  *
@@ -21,8 +21,25 @@
  *
  */
 int main(int argc, char** argv) {
+	int endereco,dado;
+	FILE * arq;
+	arq = fopen("/Users/alessandrofonseca/Desktop/arquivo_entrada.txt", "r");
+	if(arq == NULL) /// se nao conseguiu abrir o arquivo...
+	{
+		printf("Nao conseguiu Abrir o Arquivo\n");
+		return 0;
+	}
 
 	printf("Hello World\n");
+	while(!feof(arq))/// feof retorna true quando arq chegou no fim...
+	{
+		fscanf( arq ,"%x %x", &endereco, &dado);
+		memoria[endereco] = dado;
+		printf("%x = %x\n", endereco,dado);
+	}
+
+
+	fclose(arq);
 	return 0;
 
 }
