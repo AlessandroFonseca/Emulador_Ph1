@@ -39,21 +39,27 @@ void cpu(void);
 int main(int argc, char** argv) {
 	int endereco,dado;
 	FILE * arq;
-	arq = fopen("/Users/alessandrofonseca/Desktop/arquivo_entrada.txt", "r");
+	if(argc !=2)
+	{
+	    printf("Argumentos invalidos\n");
+	    printf("Uso: Emulador_PH1 <arquivo de entrada>\n");
+	    return 0;
+	}
+	arq = fopen(argv[1], "r");
 	if(arq == NULL) /// se nao conseguiu abrir o arquivo...
 	{
 		printf("Nao conseguiu Abrir o Arquivo\n");
 		return 0;
 	}
 
-	printf("Arquivo Aberto\n");
+	printf("Input file:%s\n",argv[1]);
 	while(!feof(arq))/// feof retorna true quando arq chegou no fim...
 	{
 
 		fscanf( arq ,"%x %x", &endereco, &dado);
 		memoria[endereco] = dado;
 		sombra [endereco] = dado;
-		printf("%x = %x\n", endereco,dado);
+		//printf("%x = %x\n", endereco,dado);
 	}
 
 
@@ -76,7 +82,7 @@ void cpu(void){
 
 	int i;
 	int cont=0;
-	printf("Funcao cpu\n");
+	printf("\n");
 
 	pc=0;// inicializa o pc..
 
