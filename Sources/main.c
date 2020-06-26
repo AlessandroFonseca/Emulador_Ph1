@@ -82,7 +82,7 @@ void cpu(void){
 
 	int i;
 	int cont=0;
-	printf("\n");
+	printf("\n");// esse enter é após o input file, foi solicitado..
 
 	pc=0;// inicializa o pc..
 
@@ -93,12 +93,12 @@ void cpu(void){
 		pc=pc+1;
 		ri=rdm;
 
-		//[0000]0000 = 0x00
-		//[0111]0000 = 0x70
-		//[1111]0000 = 0xF0
+		//[0000]0000 = 0x00 NOP
+		//[0111]0000 = 0x70 NOT
+		//[1111]0000 = 0xF0 HLT
 		if(ri!=0x00 && ri!=0x70 && ri!=0xf0){ // se a instrução ocupa 01 endereço de memória
 			rem=pc;
-			rdm= memoria[rem];
+			rdm= memoria[rem];//
 			pc=pc+1;
 		}
 
@@ -112,7 +112,8 @@ void cpu(void){
 
 		//[0001]0000 = 0x10
 		if(ri==0x10){ //LDR
-			printf("LDR %02x;\n", rdm);
+			printf("LDR %02x; AC <- MEM[%02x]\n", rdm,rdm);
+
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= rdm;
@@ -124,7 +125,7 @@ void cpu(void){
 
 		//[0010]0000 = 0x20
 		if(ri==0x20){ //STR
-			printf("STR %02x;\n", rdm);
+			printf("STR %02x; MEM[%02x] <- AC\n", rdm,rdm);
 			rem=rdm;
 			rdm= ac;
 			memoria[rem]=rdm;
@@ -136,7 +137,7 @@ void cpu(void){
 
 		//[0011]0000 = 0x30
 		if(ri==0x30){ //ADD
-			printf("ADD %02x;\n", rdm);
+			printf("ADD %02x; AC <- AC + MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac+rdm;
@@ -148,7 +149,7 @@ void cpu(void){
 
 		//[0100]0000 = 0x40
 		if(ri==0x40){ //SUB
-			printf("SUB %02x;\n", rdm);
+			printf("SUB %02x; AC <- AC - MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac-rdm;
@@ -160,7 +161,7 @@ void cpu(void){
 
 		//[0101]0000 = 0x50
 		if(ri==0x50){ //MUL
-			printf("MUL %02x;\n", rdm);
+			printf("MUL %02x; AC <- AC * MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac*rdm;
@@ -171,7 +172,7 @@ void cpu(void){
 
 		//[0110]0000 = 0x60
 		if(ri==0x60){ //DIV
-			printf("DIV %02x;\n", rdm);
+			printf("DIV %02x; AC <- AC / MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac/rdm;
@@ -182,7 +183,7 @@ void cpu(void){
 
 		//[0101]0000 = 0x70
 		if(ri==0x70){ //NOT
-			printf("NOT;\n");
+			printf("NOT; AC <- !AC\n");
 			ac= ~ac;
 			//ir para zero
 			cont++;
@@ -191,7 +192,7 @@ void cpu(void){
 
 		//[1000]0000 = 0x80
 		if(ri==0x80){ //AND
-			printf("AND %02x;\n", rdm);
+			printf("AND %02x; AC <- AC & MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac & memoria[rdm];
@@ -203,7 +204,7 @@ void cpu(void){
 
 		//[1001]0000 = 0x90
 		if(ri==0x90){ //OR
-			printf("OR %02x;\n", rdm);
+			printf("OR %02x; AC <- AC | MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac | memoria[rem];
@@ -215,7 +216,7 @@ void cpu(void){
 
 		//[1010]0000 = 0xA0;
 		if(ri==0xA0){ //XOR
-			printf("XOR %02x;\n", rdm);
+			printf("XOR %02x; AC <- AC ^ MEM[%02x]\n", rdm,rdm);
 			rem=rdm;
 			rdm=memoria[rem];
 			ac= ac ^ memoria[rdm];
@@ -226,7 +227,7 @@ void cpu(void){
 
 		//[1011]0000 = 0xB0
 		if(ri==0xB0){ //JMP
-			printf("JMP %02x;\n", rdm);
+			printf("JMP %02x; PC <- %02x\n", rdm,rdm);
 			pc= rdm;
 			//ir para zero
 			cont++;
@@ -236,7 +237,7 @@ void cpu(void){
 
 		//[1100]0000 = 0xC0
 		if(ri==0xC0){ //JEQ
-			printf("JEQ %02x;\n", rdm);
+			printf("JEQ %02x; Se AC==0 então PC <- %02x\n", rdm,rdm);
 			if(ac==0){
 				pc=rdm;
 			}
@@ -247,7 +248,7 @@ void cpu(void){
 
 		//[1101]0000 = 0xD0
 		if(ri==0xD0){ //JG
-			printf("JG %02x;\n", rdm);
+			printf("JG %02x; Se AC>0 então PC <- %02x\n", rdm,rdm);
 			if(ac>0){
 				pc=rdm;
 			}
@@ -258,7 +259,7 @@ void cpu(void){
 
 		//[1110]0000 = 0xE0
 		if(ri==0xE0){ //JL
-			printf("JL %02x;\n", rdm);
+			printf("JL %02x; Se AC<0 então PC <- %02x\n", rdm,rdm);
 			if(ac<0){
 				pc=rdm;
 			}
